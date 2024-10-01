@@ -18,7 +18,9 @@
       "sizes": "512x512"
     }
   ],
+  "start_url": "/app-facturacion/",
   "background_color": "#ffffff",
   "display": "standalone",
+  "scope": "/app-facturacion/",
   "theme_color": "#000000"
 }
