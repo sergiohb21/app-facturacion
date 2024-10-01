@@ -102,16 +102,16 @@ const InvoiceGenerator: React.FC<Props> = ({
 
    // Guardar PDF
    const pdfFileName = `FACTURA_${model}_${month}_${year}.pdf`;
-   const to = "jarekbartos@hotmail.com";
+  //  const to = "jarekbartos@hotmail.com";
    doc.save(pdfFileName);
 
-   // Abrir Gmail (con un enlace mailto) y enviar a jarekbartos@hotmail.com
-   const subject = `Factura del mes de ${getMonthName(month)}/${year}`;
-   const body = `Alquiler nave industrial\nmes de ${getMonthName(month)}\n\nUn saludo, Tomas Hernández.`;
-   const mailtoLink = `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  //  // Abrir Gmail (con un enlace mailto) y enviar a jarekbartos@hotmail.com
+  //  const subject = `Factura del mes de ${getMonthName(month)}/${year}`;
+  //  const body = `Alquiler nave industrial\nmes de ${getMonthName(month)}\n\nUn saludo, Tomas Hernández.`;
+  //  const mailtoLink = `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 
-   // Abrir el enlace de Gmail
-   window.open(mailtoLink, "_blank");
+  //  // Abrir el enlace de Gmail
+  //  window.open(mailtoLink, "_blank");
   };
 
   return (
