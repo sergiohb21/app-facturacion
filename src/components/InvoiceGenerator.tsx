@@ -78,7 +78,9 @@ const InvoiceGenerator: React.FC<Props> = ({
 
     // Crear la tabla con productos y totales
     doc.autoTable({
-      head: [["DESCRIPCIÓN", "SUBTOTAL", "IVA (21%)", "I.R.P.F. (19%)", "TOTAL"]],
+      head: [
+        ["DESCRIPCIÓN", "SUBTOTAL", "IVA (21%)", "I.R.P.F. (19%)", "TOTAL"],
+      ],
       body: [
         [
           `ALQUILER NAVE INDUSTRIAL\nMES DE ${getMonthName(month)}`,
@@ -98,8 +100,18 @@ const InvoiceGenerator: React.FC<Props> = ({
       },
     });
 
-    // Guardar PDF
-    doc.save(`FACTURA_${model}_${month}_${year}.pdf`);
+   // Guardar PDF
+   const pdfFileName = `FACTURA_${model}_${month}_${year}.pdf`;
+   const to = "jarekbartos@hotmail.com";
+   doc.save(pdfFileName);
+
+   // Abrir Gmail (con un enlace mailto) y enviar a jarekbartos@hotmail.com
+   const subject = `Factura ${model} del ${month}/${year}`;
+   const body = `Adjunto la factura generada: ${pdfFileName}\n\nPor favor, adjunta el archivo PDF antes de enviar.`;
+   const mailtoLink = `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+   // Abrir el enlace de Gmail
+   window.open(mailtoLink, "_blank");
   };
 
   return (
