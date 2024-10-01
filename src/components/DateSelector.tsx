@@ -20,7 +20,7 @@ const DateSelector: React.FC<Props> = ({ onDateChange }) => {
 
   return (
     <div className="flex flex-col items-center">
-      <h3 className="text-lg font-semibold mb-4">Selecciona el mes y el año</h3>
+      <h3 className="text-lg font-semibold mb-4">Selecciona fecha de facturación:</h3>
       <input
         type="month"
         className="border py-2 px-4 rounded-lg"

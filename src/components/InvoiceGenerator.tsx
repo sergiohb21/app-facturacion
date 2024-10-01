@@ -6,10 +6,29 @@ interface Props {
   model: string;
   month: number;
   year: number;
-  amount: number; // Importe total
-  subtotal: number; // Subtotal
-  iva: number; // IVA
-  irpf: number; // I.R.P.F
+  amount: number;
+  subtotal: number;
+  iva: number;
+  irpf: number;
+}
+
+function getMonthName(monthNumber: number) {
+  const months = [
+    "Enero",
+    "Febrero",
+    "Marzo",
+    "Abril",
+    "Mayo",
+    "Junio",
+    "Julio",
+    "Agosto",
+    "Septiembre",
+    "Octubre",
+    "Noviembre",
+    "Diciembre",
+  ];
+
+  return months[monthNumber - 1].toUpperCase();
 }
 
 const InvoiceGenerator: React.FC<Props> = ({
@@ -28,22 +47,25 @@ const InvoiceGenerator: React.FC<Props> = ({
 
     // Título de la factura
     doc.setFontSize(26);
+    doc.setFont("helvetica", "bold");
     doc.text("FACTURA", 14, 20);
+    doc.setFont("helvetica", "normal");
+    doc.line(14, 22, 200, 22);
 
     // Información del cliente
     doc.setFontSize(12);
-    doc.setFont("bold");
+    doc.setFont("helvetica", "bold");
     doc.text("TOMAS HERNÁNDEZ BATANERO", 14, 40);
-    doc.setFont("normal");
+    doc.setFont("helvetica", "normal");
     doc.text("C/ARCO Nº2", 14, 45);
     doc.text("28609 SEVILLA LA NUEVA", 14, 50);
     doc.text("MADRID", 14, 55);
     doc.text("N.I.F 50802704M", 14, 60);
 
     // Información de la empresa
-    doc.setFont("bold");
+    doc.setFont("helvetica", "bold");
     doc.text("IMEX-PLES S.L.", 140, 40);
-    doc.setFont("normal");
+    doc.setFont("helvetica", "normal");
     doc.text("REY 3, NAVE 6", 140, 45);
     doc.text("POL. IND. LOS PERALES", 140, 50);
     doc.text("28609 SEVILLA LA NUEVA", 140, 55);
@@ -56,10 +78,10 @@ const InvoiceGenerator: React.FC<Props> = ({
 
     // Crear la tabla con productos y totales
     doc.autoTable({
-      head: [["DESCRIPCIÓN", "SUBTOTAL", "IVA 21%", "I.R.P.F. 19%", "TOTAL"]],
+      head: [["DESCRIPCIÓN", "SUBTOTAL", "IVA (21%)", "I.R.P.F. (19%)", "TOTAL"]],
       body: [
         [
-          "ALQUILER NAVE INDUSTRIAL",
+          `ALQUILER NAVE INDUSTRIAL\nMES DE ${getMonthName(month)}`,
           `${subtotal.toFixed(2)} €`,
           `${iva.toFixed(2)} €`,
           `- ${irpf.toFixed(2)} €`,
@@ -77,7 +99,7 @@ const InvoiceGenerator: React.FC<Props> = ({
     });
 
     // Guardar PDF
-    doc.save(`factura_${model}_${month}_${year}.pdf`);
+    doc.save(`FACTURA_${model}_${month}_${year}.pdf`);
   };
 
   return (
