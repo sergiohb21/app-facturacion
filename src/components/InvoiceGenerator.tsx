@@ -12,7 +12,7 @@ interface Props {
   irpf: number;
 }
 
-function getMonthName(monthNumber: number) {
+export function getMonthName(monthNumber: number) {
   const months = [
     "Enero",
     "Febrero",
@@ -100,18 +100,18 @@ const InvoiceGenerator: React.FC<Props> = ({
       },
     });
 
-   // Guardar PDF
-   const pdfFileName = `FACTURA_${model}_${month}_${year}.pdf`;
-  //  const to = "jarekbartos@hotmail.com";
-   doc.save(pdfFileName);
+    // Guardar PDF
+    const pdfFileName = `FACTURA_${model}_${month}_${year}.pdf`;
+    //  const to = "jarekbartos@hotmail.com";
+    doc.save(pdfFileName);
 
-  //  // Abrir Gmail (con un enlace mailto) y enviar a jarekbartos@hotmail.com
-  //  const subject = `Factura del mes de ${getMonthName(month)}/${year}`;
-  //  const body = `Alquiler nave industrial\nmes de ${getMonthName(month)}\n\nUn saludo, Tomas Hernández.`;
-  //  const mailtoLink = `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    //  // Abrir Gmail (con un enlace mailto) y enviar a jarekbartos@hotmail.com
+    //  const subject = `Factura del mes de ${getMonthName(month)}/${year}`;
+    //  const body = `Alquiler nave industrial\nmes de ${getMonthName(month)}\n\nUn saludo, Tomas Hernández.`;
+    //  const mailtoLink = `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 
-  //  // Abrir el enlace de Gmail
-  //  window.open(mailtoLink, "_blank");
+    //  // Abrir el enlace de Gmail
+    //  window.open(mailtoLink, "_blank");
   };
 
   return (
@@ -120,11 +120,11 @@ const InvoiceGenerator: React.FC<Props> = ({
       className="flex flex-col items-center p-4 bg-white shadow-md rounded-lg"
     >
       <h3 className="text-lg font-semibold mb-4 text-gray-800">
-        Generar Factura
+        Resumen Factura
       </h3>
       <div className="mb-4">
         <p className="text-sm text-gray-600">Modelo: {model}</p>
-        <p className="text-sm text-gray-600">Mes: {month}</p>
+        <p className="text-sm text-gray-600">Mes: {getMonthName(month)}</p>
         <p className="text-sm text-gray-600">Año: {year}</p>
         <p className="text-sm text-gray-600">Importe: {amount.toFixed(2)} €</p>
       </div>
@@ -133,7 +133,7 @@ const InvoiceGenerator: React.FC<Props> = ({
           className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg w-full transition duration-200"
           onClick={generatePDF}
         >
-          Descargar PDF
+          Descargar
         </button>
       )}
     </div>

@@ -23,7 +23,7 @@ const DateSelector: React.FC<Props> = ({ onDateChange }) => {
       <h3 className="text-lg font-semibold mb-4">Selecciona fecha de facturación:</h3>
       <input
         type="month"
-        className="border py-2 px-4 rounded-lg"
+        className="border py-2 px-4 rounded-lg mb-2 w-full"
         value={formattedDate}
         onChange={handleChange}
       />
