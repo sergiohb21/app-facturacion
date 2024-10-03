@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { jsPDF } from "jspdf";
 import "jspdf-autotable";
 
@@ -41,6 +41,7 @@ const InvoiceGenerator: React.FC<Props> = ({
   irpf,
 }) => {
   const invoiceRef = useRef<HTMLDivElement>(null);
+  const [isAnimating, setIsAnimating] = useState(true);
 
   const generatePDF = () => {
     const doc = new jsPDF();
@@ -102,40 +103,38 @@ const InvoiceGenerator: React.FC<Props> = ({
 
     // Guardar PDF
     const pdfFileName = `FACTURA_${model}_${month}_${year}.pdf`;
-    //  const to = "jarekbartos@hotmail.com";
     doc.save(pdfFileName);
 
-    //  // Abrir Gmail (con un enlace mailto) y enviar a jarekbartos@hotmail.com
-    //  const subject = `Factura del mes de ${getMonthName(month)}/${year}`;
-    //  const body = `Alquiler nave industrial\nmes de ${getMonthName(month)}\n\nUn saludo, Tomas Hernández.`;
-    //  const mailtoLink = `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-
-    //  // Abrir el enlace de Gmail
-    //  window.open(mailtoLink, "_blank");
+    // Quitar la animación una vez que se ha generado el PDF
+    setIsAnimating(false);
   };
 
   return (
     <div
       ref={invoiceRef}
-      className="flex flex-col items-center p-4 bg-white shadow-md rounded-lg"
+      className="flex flex-col items-center p-4 bg-white shadow-md rounded-lg w-full max-w-lg"
     >
       <h3 className="text-lg font-semibold mb-4 text-gray-800">
-        Resumen Factura
+        Resumen:
       </h3>
-      <div className="mb-4">
-        <p className="text-sm text-gray-600">Modelo: {model}</p>
-        <p className="text-sm text-gray-600">Mes: {getMonthName(month)}</p>
-        <p className="text-sm text-gray-600">Año: {year}</p>
-        <p className="text-sm text-gray-600">Importe: {amount.toFixed(2)} €</p>
+      <div className="mb-4 text-center">
+        <p className="text-sm text-gray-600"><strong>Modelo:</strong> {model}</p>
+        <p className="text-sm text-gray-600"><strong>Mes:</strong> {getMonthName(month)}</p>
+        <p className="text-sm text-gray-600"><strong>Año:</strong> {year}</p>
+        <p className="text-sm text-gray-600"><strong>Importe:</strong> {amount.toFixed(2)} €</p>
+
       </div>
-      {model && month && year && (
-        <button
-          className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg w-full transition duration-200"
-          onClick={generatePDF}
-        >
-          Descargar
-        </button>
-      )}
+      <button
+        className={`bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg w-full transition duration-200 focus:outline-none ${
+          model && month && year
+            ? `opacity-100 ${isAnimating ? "pulse" : ""}`
+            : "opacity-0 pointer-events-none"
+        }`}
+        onClick={generatePDF}
+        onMouseEnter={() => setIsAnimating(true)}
+      >
+        Descargar
+      </button>
     </div>
   );
 };
