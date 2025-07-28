@@ -1,21 +1,21 @@
 {
   "files": {
-    "main.css": "/app-facturacion/static/css/main.bc3774ce.css",
-    "main.js": "/app-facturacion/static/js/main.818636c7.js",
-    "static/js/239.44d72749.chunk.js": "/app-facturacion/static/js/239.44d72749.chunk.js",
-    "static/js/213.13dc14db.chunk.js": "/app-facturacion/static/js/213.13dc14db.chunk.js",
-    "static/js/732.f45afb07.chunk.js": "/app-facturacion/static/js/732.f45afb07.chunk.js",
-    "static/js/453.b985fd1c.chunk.js": "/app-facturacion/static/js/453.b985fd1c.chunk.js",
+    "main.css": "/app-facturacion/static/css/main.906b1ab2.css",
+    "main.js": "/app-facturacion/static/js/main.e12ae89d.js",
+    "static/js/239.a80f7162.chunk.js": "/app-facturacion/static/js/239.a80f7162.chunk.js",
+    "static/js/213.8ac1e84a.chunk.js": "/app-facturacion/static/js/213.8ac1e84a.chunk.js",
+    "static/js/732.b3707969.chunk.js": "/app-facturacion/static/js/732.b3707969.chunk.js",
+    "static/js/453.eacb0fc6.chunk.js": "/app-facturacion/static/js/453.eacb0fc6.chunk.js",
     "index.html": "/app-facturacion/index.html",
-    "main.bc3774ce.css.map": "/app-facturacion/static/css/main.bc3774ce.css.map",
-    "main.818636c7.js.map": "/app-facturacion/static/js/main.818636c7.js.map",
-    "239.44d72749.chunk.js.map": "/app-facturacion/static/js/239.44d72749.chunk.js.map",
-    "213.13dc14db.chunk.js.map": "/app-facturacion/static/js/213.13dc14db.chunk.js.map",
-    "732.f45afb07.chunk.js.map": "/app-facturacion/static/js/732.f45afb07.chunk.js.map",
-    "453.b985fd1c.chunk.js.map": "/app-facturacion/static/js/453.b985fd1c.chunk.js.map"
+    "main.906b1ab2.css.map": "/app-facturacion/static/css/main.906b1ab2.css.map",
+    "main.e12ae89d.js.map": "/app-facturacion/static/js/main.e12ae89d.js.map",
+    "239.a80f7162.chunk.js.map": "/app-facturacion/static/js/239.a80f7162.chunk.js.map",
+    "213.8ac1e84a.chunk.js.map": "/app-facturacion/static/js/213.8ac1e84a.chunk.js.map",
+    "732.b3707969.chunk.js.map": "/app-facturacion/static/js/732.b3707969.chunk.js.map",
+    "453.eacb0fc6.chunk.js.map": "/app-facturacion/static/js/453.eacb0fc6.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.bc3774ce.css",
-    "static/js/main.818636c7.js"
+    "static/css/main.906b1ab2.css",
+    "static/js/main.e12ae89d.js"
   ]
 }
