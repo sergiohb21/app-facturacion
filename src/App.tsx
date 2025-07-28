@@ -73,10 +73,10 @@ const App: React.FC = () => {
           model={model}
           month={selectedDate.getMonth() + 1}
           year={selectedDate.getFullYear()}
-          amount={816.0}
-          subtotal={800.0}
-          iva={168.0}
-          irpf={152.0}
+          amount={903.0}
+          subtotal={885.0}
+          iva={186.0}
+          irpf={168.0}
         />
       </div>
       {currentStep > 1 && (
