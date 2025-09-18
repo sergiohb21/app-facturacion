@@ -5,7 +5,7 @@ import { PDFGenerator } from "../lib/pdfGenerator";
 import InvoiceSummary from "./InvoiceSummary";
 import InvoiceProgress from "./InvoiceProgress";
 import { Button } from "./ui/button";
-import SuccessModal from "./ui/SuccessModal";
+// import SuccessModal from "./ui/SuccessModal";
 import { Download } from "lucide-react";
 
 interface Props {
