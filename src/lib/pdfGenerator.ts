@@ -87,25 +87,6 @@ export class PDFGenerator {
       },
     });
 
-    // Footer profesional con información del creador
-    const footerY = 270;
-    
-    // Línea divisoria
-    doc.setDrawColor(226, 232, 240);
-    doc.line(14, footerY, 196, footerY);
-    
-    // Información de la aplicación y creador
-    doc.setFontSize(7);
-    doc.setTextColor(100, 116, 139);
-    doc.text("Generado con FacturaPro App", 105, footerY + 5, { align: "center" });
-    doc.text("Desarrollado por Sergio Hernández", 105, footerY + 10, { align: "center" });
-    doc.text("GitHub: github.com/sergiohb21", 105, footerY + 15, { align: "center" });
-    
-    // Atribución a Claude AI
-    doc.setFontSize(6);
-    doc.setTextColor(156, 163, 175);
-    doc.text("UI/UX mejorada con Claude Code", 105, footerY + 20, { align: "center" });
-
     return doc.output('blob');
   }
 

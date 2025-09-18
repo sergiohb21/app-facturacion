@@ -189,7 +189,7 @@ const InvoiceGenerator: React.FC<Props> = ({
         </div>
       </Button>
 
-      {/* Modal de éxito */}
+      {/* Modal de éxito 
       <SuccessModal
         isOpen={showSuccessModal}
         onClose={() => {
@@ -207,6 +207,7 @@ const InvoiceGenerator: React.FC<Props> = ({
         actionText="Abrir"
         onOpen={openPDF}
       />
+      */}
     </div>
   );
 };
