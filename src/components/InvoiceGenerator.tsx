@@ -1,6 +1,12 @@
-import React, { useRef, useState } from "react";
-import { jsPDF } from "jspdf";
-import "jspdf-autotable";
+import React, { useState, useMemo } from "react";
+import { getModelById } from "../lib/invoiceModels";
+import { InvoiceRecordsService } from "../lib/invoiceRecordsService";
+import { PDFGenerator } from "../lib/pdfGenerator";
+import InvoiceSummary from "./InvoiceSummary";
+import InvoiceProgress from "./InvoiceProgress";
+import { Button } from "./ui/button";
+import SuccessModal from "./ui/SuccessModal";
+import { Download } from "lucide-react";
 
 interface Props {
   model: string;
@@ -12,25 +18,6 @@ interface Props {
   irpf: number;
 }
 
-export function getMonthName(monthNumber: number) {
-  const months = [
-    "Enero",
-    "Febrero",
-    "Marzo",
-    "Abril",
-    "Mayo",
-    "Junio",
-    "Julio",
-    "Agosto",
-    "Septiembre",
-    "Octubre",
-    "Noviembre",
-    "Diciembre",
-  ];
-
-  return months[monthNumber - 1].toUpperCase();
-}
-
 const InvoiceGenerator: React.FC<Props> = ({
   model,
   month,
@@ -40,101 +27,186 @@ const InvoiceGenerator: React.FC<Props> = ({
   iva,
   irpf,
 }) => {
-  const invoiceRef = useRef<HTMLDivElement>(null);
-  const [isAnimating, setIsAnimating] = useState(true);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [generationProgress, setGenerationProgress] = useState(0);
+  const [generationStatus, setGenerationStatus] = useState<
+    "idle" | "generating" | "completed" | "error"
+  >("idle");
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [generatedFileName, setGeneratedFileName] = useState("");
+  const [pdfBlobUrl, setPdfBlobUrl] = useState("");
 
-  const generatePDF = () => {
-    const doc = new jsPDF();
+  const selectedModel = useMemo(() => getModelById(model), [model]);
 
-    // Título de la factura
-    doc.setFontSize(26);
-    doc.setFont("helvetica", "bold");
-    doc.text("FACTURA", 14, 20);
-    doc.setFont("helvetica", "normal");
-    doc.line(14, 22, 200, 22);
+  const generatePDF = async () => {
+    if (!selectedModel) return;
 
-    // Información del cliente
-    doc.setFontSize(12);
-    doc.setFont("helvetica", "bold");
-    doc.text("TOMAS HERNÁNDEZ BATANERO", 14, 40);
-    doc.setFont("helvetica", "normal");
-    doc.text("C/ARCO Nº2", 14, 45);
-    doc.text("28609 SEVILLA LA NUEVA", 14, 50);
-    doc.text("MADRID", 14, 55);
-    doc.text("N.I.F 50802704M", 14, 60);
+    setIsGenerating(true);
+    setGenerationStatus("generating");
+    setGenerationProgress(0);
 
-    // Información de la empresa
-    doc.setFont("helvetica", "bold");
-    doc.text("IMEX-PLES S.L.", 140, 40);
-    doc.setFont("helvetica", "normal");
-    doc.text("REY 3, NAVE 6", 140, 45);
-    doc.text("POL. IND. LOS PERALES", 140, 50);
-    doc.text("28609 SEVILLA LA NUEVA", 140, 55);
-    doc.text("MADRID", 140, 60);
-    doc.text("C.I.F. B87627295", 140, 65);
+    try {
+      // Simular proceso de generación con pasos
+      const steps = [
+        { progress: 20, message: "Iniciando generación..." },
+        { progress: 40, message: "Procesando datos de factura..." },
+        { progress: 60, message: "Generando contenido PDF..." },
+        { progress: 80, message: "Aplicando formato y estilos..." },
+        { progress: 100, message: "Finalizando documento..." },
+      ];
 
-    // Detalles de la factura
-    doc.text(`Fecha: 01/${month}/${year}`, 14, 85);
-    doc.text(`Factura: ${month}/${year}`, 14, 90);
+      for (const step of steps) {
+        await new Promise((resolve) => setTimeout(resolve, 300));
+        setGenerationProgress(step.progress);
+      }
 
-    // Crear la tabla con productos y totales
-    doc.autoTable({
-      head: [
-        ["DESCRIPCIÓN", "SUBTOTAL", "IVA (21%)", "I.R.P.F. (19%)", "TOTAL"],
-      ],
-      body: [
-        [
-          `ALQUILER NAVE INDUSTRIAL\nMES DE ${getMonthName(month)}`,
-          `${subtotal.toFixed(2)} €`,
-          `${iva.toFixed(2)} €`,
-          `- ${irpf.toFixed(2)} €`,
-          `${amount.toFixed(2)} €`,
-        ],
-      ],
-      startY: 110,
-      theme: "grid",
-      styles: { fontSize: 12, cellPadding: 3 },
-      headStyles: { fillColor: [0, 100, 200], textColor: 255 },
-      columnStyles: {
-        3: { textColor: [255, 0, 0] },
-        4: { textColor: [0, 0, 0], fontStyle: "bold" },
-      },
-    });
+      // Generar PDF usando la clase separada
+      const pdfBlob = await PDFGenerator.generatePDF({
+        model: selectedModel,
+        month,
+        year,
+        amount,
+        subtotal,
+        iva,
+        irpf,
+      });
 
-    // Guardar PDF
-    const pdfFileName = `FACTURA_${model}_${month}_${year}.pdf`;
-    doc.save(pdfFileName);
+      const pdfFileName = PDFGenerator.getFileName(model, month, year);
+      setGeneratedFileName(pdfFileName);
+      
+      // Crear blob URL para poder abrir el archivo
+      const blobUrl = URL.createObjectURL(pdfBlob);
+      setPdfBlobUrl(blobUrl);
+      
+      // Descargar PDF
+      const link = document.createElement('a');
+      link.href = blobUrl;
+      link.download = pdfFileName;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
 
-    // Quitar la animación una vez que se ha generado el PDF
-    setIsAnimating(false);
+      // Registrar la factura generada
+      const record = {
+        id: InvoiceRecordsService.generateId(),
+        modelId: selectedModel.id,
+        modelName: selectedModel.name,
+        month,
+        year,
+        amount,
+        subtotal,
+        iva,
+        irpf,
+        generatedAt: new Date(),
+        fileName: pdfFileName,
+        landlordInfo: selectedModel.landlordInfo
+          ? {
+              name: selectedModel.landlordInfo.name,
+              documentType: selectedModel.landlordInfo.documentType,
+              documentNumber: selectedModel.landlordInfo.documentNumber,
+            }
+          : undefined,
+      };
+
+      const result = InvoiceRecordsService.saveRecord(record);
+      if (!result.success) {
+        console.warn(result.message);
+      }
+
+      // Éxito
+      setGenerationStatus("completed");
+
+      // Mostrar modal de éxito
+      setTimeout(() => {
+        setShowSuccessModal(true);
+        setIsGenerating(false);
+        setGenerationProgress(0);
+        setGenerationStatus("idle");
+      }, 1000);
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+      setGenerationStatus("error");
+
+      // Resetear después de 2 segundos
+      setTimeout(() => {
+        setIsGenerating(false);
+        setGenerationProgress(0);
+        setGenerationStatus("idle");
+      }, 2000);
+    }
+  };
+
+  const openPDF = () => {
+    if (pdfBlobUrl) {
+      window.open(pdfBlobUrl, '_blank');
+    }
   };
 
   return (
-    <div
-      ref={invoiceRef}
-      className="flex flex-col items-center p-4 bg-white shadow-md rounded-lg w-full max-w-lg"
-    >
-      <h3 className="text-lg font-semibold mb-4 text-gray-800">
-        Resumen:
-      </h3>
-      <div className="mb-4 text-center">
-        <p className="text-sm text-gray-600"><strong>Modelo:</strong> {model}</p>
-        <p className="text-sm text-gray-600"><strong>Mes:</strong> {getMonthName(month)}</p>
-        <p className="text-sm text-gray-600"><strong>Año:</strong> {year}</p>
-        <p className="text-sm text-gray-600"><strong>Importe:</strong> {amount.toFixed(2)} €</p>
+    <div className="w-full max-w-2xl mx-auto space-y-4 sm:space-y-6">
+      {/* Resumen de la factura */}
+      {selectedModel && (
+        <InvoiceSummary
+          model={model}
+          modelName={selectedModel.name}
+          landlordInfo={selectedModel.landlordInfo}
+          month={month}
+          year={year}
+          amount={amount}
+          subtotal={subtotal}
+          iva={iva}
+          irpf={irpf}
+        />
+      )}
 
-      </div>
-      <button
-        className={`bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg w-full transition duration-200 focus:outline-none ${
-          model && month && year
-            ? `opacity-100 ${isAnimating ? "pulse" : ""}`
-            : "opacity-0 pointer-events-none"
-        }`}
+      {/* Estado de generación */}
+      <InvoiceProgress
+        isGenerating={isGenerating}
+        generationProgress={generationProgress}
+        generationStatus={generationStatus}
+      />
+
+      {/* Botón de descarga */}
+      <Button
+        size="lg"
+        className="w-full h-14 text-lg font-bold shadow-lg hover:shadow-xl transition-all duration-200 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
         onClick={generatePDF}
-        onMouseEnter={() => setIsAnimating(true)}
+        disabled={isGenerating || !model || !month || !year}
       >
-        Descargar
-      </button>
+        <div className="flex items-center space-x-3">
+          {isGenerating ? (
+            <Download className="h-5 w-5 animate-bounce" />
+          ) : (
+            <Download className="h-5 w-5" />
+          )}
+          <span>
+            {isGenerating
+              ? "Generando factura..."
+              : generationStatus === "completed"
+              ? "¡Factura generada!"
+              : "Descargar factura PDF"}
+          </span>
+        </div>
+      </Button>
+
+      {/* Modal de éxito */}
+      <SuccessModal
+        isOpen={showSuccessModal}
+        onClose={() => {
+          setShowSuccessModal(false);
+          // Limpiar blob URL para evitar memory leaks
+          if (pdfBlobUrl) {
+            URL.revokeObjectURL(pdfBlobUrl);
+            setPdfBlobUrl("");
+          }
+        }}
+        title="¡Factura generada con éxito!"
+        message="La factura ha sido generada y descargada correctamente en tu carpeta de Descargas."
+        fileName={generatedFileName}
+        fileType="pdf"
+        actionText="Abrir"
+        onOpen={openPDF}
+      />
     </div>
   );
 };

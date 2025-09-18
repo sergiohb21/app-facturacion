@@ -1,4 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { Button } from "./ui/button";
+import { Calendar } from "./ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import { Calendar as CalendarIcon, Clock, Info } from "lucide-react";
+import { format } from "date-fns";
+import { es } from "date-fns/locale";
 
 interface Props {
   onDateChange: (date: Date) => void;
@@ -7,45 +13,110 @@ interface Props {
 
 const DateSelector: React.FC<Props> = ({ onDateChange, onConfirm }) => {
   const [date, setDate] = useState<Date>(new Date());
-  const [isAnimating, setIsAnimating] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState(false);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedDate = new Date(event.target.value);
-    setDate(selectedDate);
-    onDateChange(selectedDate);
+  const handleDateSelect = (selectedDate: Date | undefined) => {
+    if (selectedDate) {
+      setDate(selectedDate);
+      onDateChange(selectedDate);
+      setIsOpen(false);
+    }
   };
 
-  // Formato YYYY-MM para el input de tipo month
-  const formattedDate = `${date.getFullYear()}-${String(
-    date.getMonth() + 1
-  ).padStart(2, "0")}`;
-
-  useEffect(() => {
-    if (date) {
-      setIsAnimating(true);
-    }
-  }, [date]);
+  const monthNames = [
+    "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+    "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+  ];
 
   return (
-    <div className="flex flex-col items-center">
-      <input
-        type="month"
-        className="border py-2 px-4 rounded-lg mb-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-        value={formattedDate}
-        onChange={handleChange}
-      />
-      <p className="mt-2 text-gray-700">
-        Fecha seleccionada: {date.getMonth() + 1}/{date.getFullYear()}
-      </p>
-      <button
+    <div className="space-y-6">
+      {/* Seleccionador de fecha mejorado */}
+      <div className="space-y-3">
+        <label className="text-sm font-medium text-foreground">
+          Seleccionar mes y año de facturación
+        </label>
+        
+        <Popover open={isOpen} onOpenChange={setIsOpen}>
+          <PopoverTrigger asChild>
+            <Button
+              variant="outline"
+              className="w-full justify-start text-left font-normal h-12"
+            >
+              <CalendarIcon className="mr-3 h-4 w-4" />
+              {format(date, "MMMM yyyy", { locale: es })}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-auto p-0" align="start">
+            <Calendar
+              mode="single"
+              selected={date}
+              onSelect={handleDateSelect}
+              initialFocus
+              className="rounded-md border"
+              locale={es}
+            />
+          </PopoverContent>
+        </Popover>
+      </div>
+
+      {/* Tarjeta de fecha seleccionada */}
+      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/50 dark:to-indigo-950/50 rounded-xl p-6 border border-blue-200 dark:border-blue-800">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center space-x-3">
+            <div className="bg-blue-100 dark:bg-blue-900 p-2 rounded-lg">
+              <Clock className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+            </div>
+            <div>
+              <h3 className="font-semibold text-blue-900 dark:text-blue-100">Fecha seleccionada</h3>
+              <p className="text-sm text-blue-600 dark:text-blue-400">Periodo de facturación</p>
+            </div>
+          </div>
+        </div>
+        
+        <div className="space-y-2">
+          <div className="text-2xl font-bold text-blue-900 dark:text-blue-100">
+            {monthNames[date.getMonth()]} {date.getFullYear()}
+          </div>
+          <div className="text-sm text-blue-600 dark:text-blue-400">
+            Factura correspondiente al periodo seleccionado
+          </div>
+        </div>
+      </div>
+
+      {/* Información importante */}
+      <div className="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-950/50 dark:to-orange-950/50 rounded-xl p-6 border border-amber-200 dark:border-amber-800">
+        <div className="flex items-start space-x-3">
+          <div className="bg-amber-100 dark:bg-amber-900 p-2 rounded-lg mt-1">
+            <Info className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+          </div>
+          <div className="flex-1">
+            <h3 className="font-semibold text-amber-900 dark:text-amber-100 mb-3">Información importante</h3>
+            <ul className="space-y-2 text-sm text-amber-700 dark:text-amber-300">
+              <li className="flex items-start">
+                <span className="w-1.5 h-1.5 bg-amber-400 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                <span>La factura se generará automáticamente con los datos del mes seleccionado</span>
+              </li>
+              <li className="flex items-start">
+                <span className="w-1.5 h-1.5 bg-amber-400 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                <span>Los importes de IVA e IRPF se calcularán según la configuración del modelo</span>
+              </li>
+              <li className="flex items-start">
+                <span className="w-1.5 h-1.5 bg-amber-400 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                <span>Podrás descargar el PDF en alta calidad en el siguiente paso</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      {/* Botón de confirmación mejorado */}
+      <Button 
+        size="lg"
+        className="w-full h-12 text-base font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
         onClick={onConfirm}
-        className={`bg-blue-500 text-white py-2 px-4 rounded-lg mt-4 w-full transition duration-200 focus:outline-none 
-          ${isAnimating ? "pulse" : ""} 
-          ${formattedDate ? "opacity-100" : "opacity-0 pointer-events-none"}`}
-        onMouseEnter={() => setIsAnimating(true)}
       >
-        Confirmar
-      </button>
+        Confirmar fecha y generar factura
+      </Button>
     </div>
   );
 };
