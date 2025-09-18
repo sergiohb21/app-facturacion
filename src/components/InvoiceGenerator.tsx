@@ -32,9 +32,9 @@ const InvoiceGenerator: React.FC<Props> = ({
   const [generationStatus, setGenerationStatus] = useState<
     "idle" | "generating" | "completed" | "error"
   >("idle");
-  const [showSuccessModal, setShowSuccessModal] = useState(false);
-  const [generatedFileName, setGeneratedFileName] = useState("");
-  const [pdfBlobUrl, setPdfBlobUrl] = useState("");
+  // const [showSuccessModal, setShowSuccessModal] = useState(false);
+  // const [generatedFileName, setGeneratedFileName] = useState("");
+  // const [pdfBlobUrl, setPdfBlobUrl] = useState("");
 
   const selectedModel = useMemo(() => getModelById(model), [model]);
 
@@ -72,11 +72,11 @@ const InvoiceGenerator: React.FC<Props> = ({
       });
 
       const pdfFileName = PDFGenerator.getFileName(model, month, year);
-      setGeneratedFileName(pdfFileName);
+      //setGeneratedFileName(pdfFileName);
       
       // Crear blob URL para poder abrir el archivo
       const blobUrl = URL.createObjectURL(pdfBlob);
-      setPdfBlobUrl(blobUrl);
+      //setPdfBlobUrl(blobUrl);
       
       // Descargar PDF
       const link = document.createElement('a');
@@ -118,7 +118,7 @@ const InvoiceGenerator: React.FC<Props> = ({
 
       // Mostrar modal de éxito
       setTimeout(() => {
-        setShowSuccessModal(true);
+        // setShowSuccessModal(true);
         setIsGenerating(false);
         setGenerationProgress(0);
         setGenerationStatus("idle");
@@ -136,11 +136,11 @@ const InvoiceGenerator: React.FC<Props> = ({
     }
   };
 
-  const openPDF = () => {
-    if (pdfBlobUrl) {
-      window.open(pdfBlobUrl, '_blank');
-    }
-  };
+  // const openPDF = () => {
+  //   if (pdfBlobUrl) {
+  //     window.open(pdfBlobUrl, '_blank');
+  //   }
+  // };
 
   return (
     <div className="w-full max-w-2xl mx-auto space-y-4 sm:space-y-6">
