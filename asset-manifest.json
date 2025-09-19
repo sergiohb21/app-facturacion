@@ -1,21 +1,21 @@
 {
   "files": {
-    "main.css": "/app-facturacion/static/css/main.759b8b13.css",
-    "main.js": "/app-facturacion/static/js/main.54944e5c.js",
+    "main.css": "/app-facturacion/static/css/main.cec5fe31.css",
+    "main.js": "/app-facturacion/static/js/main.d59e9620.js",
     "static/js/239.cf0285ed.chunk.js": "/app-facturacion/static/js/239.cf0285ed.chunk.js",
     "static/js/213.67482c4e.chunk.js": "/app-facturacion/static/js/213.67482c4e.chunk.js",
     "static/js/455.4f30459a.chunk.js": "/app-facturacion/static/js/455.4f30459a.chunk.js",
     "static/js/453.7bbdfb54.chunk.js": "/app-facturacion/static/js/453.7bbdfb54.chunk.js",
     "index.html": "/app-facturacion/index.html",
-    "main.759b8b13.css.map": "/app-facturacion/static/css/main.759b8b13.css.map",
-    "main.54944e5c.js.map": "/app-facturacion/static/js/main.54944e5c.js.map",
+    "main.cec5fe31.css.map": "/app-facturacion/static/css/main.cec5fe31.css.map",
+    "main.d59e9620.js.map": "/app-facturacion/static/js/main.d59e9620.js.map",
     "239.cf0285ed.chunk.js.map": "/app-facturacion/static/js/239.cf0285ed.chunk.js.map",
     "213.67482c4e.chunk.js.map": "/app-facturacion/static/js/213.67482c4e.chunk.js.map",
     "455.4f30459a.chunk.js.map": "/app-facturacion/static/js/455.4f30459a.chunk.js.map",
     "453.7bbdfb54.chunk.js.map": "/app-facturacion/static/js/453.7bbdfb54.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.759b8b13.css",
-    "static/js/main.54944e5c.js"
+    "static/css/main.cec5fe31.css",
+    "static/js/main.d59e9620.js"
   ]
 }
