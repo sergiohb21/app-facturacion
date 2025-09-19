@@ -14,9 +14,9 @@ const BasicInfoSection: React.FC<BasicInfoSectionProps> = memo(({
   getFieldError 
 }) => {
   return (
-    <div className="space-y-4">
-      <h3 className="text-lg font-semibold">Información Básica</h3>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div className="space-y-3">
+      <h3 className="text-base font-semibold">Información Básica</h3>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         <div>
           <Label htmlFor="name">Nombre *</Label>
           <Input

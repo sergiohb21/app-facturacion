@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Button } from "./ui/button";
 import { Card, CardContent } from "./ui/card";
 import { getStoredModels, type InvoiceModel } from "../lib/invoiceModels";
 
@@ -49,15 +48,15 @@ const InvoiceTypeSelector: React.FC<Props> = ({ onSelect }) => {
 
   const handleSelect = (model: string) => {
     setSelectedType(model);
-    setTimeout(() => onSelect(model), 200);
+    onSelect(model);
   };
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-2">
       {models.length === 0 ? (
         <Card>
-          <CardContent className="p-6 text-center">
-            <p className="text-muted-foreground mb-4">
+          <CardContent className="p-4 text-center">
+            <p className="text-muted-foreground mb-3">
               No hay modelos de factura disponibles
             </p>
             <p className="text-sm text-muted-foreground">
@@ -66,58 +65,51 @@ const InvoiceTypeSelector: React.FC<Props> = ({ onSelect }) => {
           </CardContent>
         </Card>
       ) : (
-        models.map((model) => (
-          <Card 
-            key={model.id}
-            className={`cursor-pointer transition-all duration-200 hover:shadow-md ${
-              selectedType === model.id 
-                ? "ring-2 ring-primary border-primary" 
-                : "hover:border-primary/50"
-            }`}
-            onClick={() => handleSelect(model.id)}
-          >
-            <CardContent className="p-4">
-              <div className="flex items-start space-x-3">
-                <div className="text-2xl">{getTypeIcon(model.type)}</div>
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <h3 className="font-medium text-sm">{model.name}</h3>
-                    <span className={`text-xs px-2 py-1 rounded-full ${getTypeColor(model.type)}`}>
-                      {model.type}
-                    </span>
-                  </div>
-                  <p className="text-xs text-muted-foreground mb-2">
-                    {model.description}
-                  </p>
-                  <div className="text-xs font-medium text-primary">
-                    {model.baseAmount.toLocaleString('es-ES', { style: 'currency', currency: 'EUR' })}/mes
-                  </div>
-                </div>
-                <div className={`w-4 h-4 rounded-full border-2 ${
-                  selectedType === model.id 
-                    ? "bg-primary border-primary" 
-                    : "border-muted-foreground"
-                }`}>
-                  {selectedType === model.id && (
-                    <div className="w-full h-full rounded-full bg-primary flex items-center justify-center">
-                      <div className="w-2 h-2 rounded-full bg-primary-foreground" />
+        <div className="max-h-[50vh] sm:max-h-[55vh] overflow-y-auto space-y-2">
+          {models.map((model) => (
+            <Card 
+              key={model.id}
+              className={`cursor-pointer transition-all duration-200 hover:shadow-md ${
+                selectedType === model.id 
+                  ? "ring-2 ring-primary border-primary" 
+                  : "hover:border-primary/50"
+              }`}
+              onClick={() => handleSelect(model.id)}
+            >
+              <CardContent className="p-3">
+                <div className="flex items-start space-x-3">
+                  <div className="text-xl">{getTypeIcon(model.type)}</div>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-1">
+                      <h3 className="font-medium text-sm">{model.name}</h3>
+                      <span className={`text-xs px-2 py-1 rounded-full ${getTypeColor(model.type)}`}>
+                        {model.type}
+                      </span>
                     </div>
-                  )}
+                    <p className="text-xs text-muted-foreground mb-2">
+                      {model.description}
+                    </p>
+                    <div className="text-xs font-medium text-primary">
+                      {model.baseAmount.toLocaleString('es-ES', { style: 'currency', currency: 'EUR' })}/mes
+                    </div>
+                  </div>
+                  <div className={`w-4 h-4 rounded-full border-2 ${
+                    selectedType === model.id 
+                      ? "bg-primary border-primary" 
+                      : "border-muted-foreground"
+                  }`}>
+                    {selectedType === model.id && (
+                      <div className="w-full h-full rounded-full bg-primary flex items-center justify-center">
+                        <div className="w-2 h-2 rounded-full bg-primary-foreground" />
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))
-      )
-      }
-      
-      <Button 
-        className="w-full mt-4"
-        disabled={!selectedType || models.length === 0}
-        onClick={() => selectedType && onSelect(selectedType)}
-      >
-        Continuar
-      </Button>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

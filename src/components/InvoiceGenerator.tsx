@@ -143,7 +143,7 @@ const InvoiceGenerator: React.FC<Props> = ({
   // };
 
   return (
-    <div className="w-full max-w-2xl mx-auto space-y-4 sm:space-y-6">
+    <div className="w-full max-w-2xl mx-auto space-y-3">
       {/* Resumen de la factura */}
       {selectedModel && (
         <InvoiceSummary
@@ -168,16 +168,15 @@ const InvoiceGenerator: React.FC<Props> = ({
 
       {/* Botón de descarga */}
       <Button
-        size="lg"
-        className="w-full h-14 text-lg font-bold shadow-lg hover:shadow-xl transition-all duration-200 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
+        className="w-full h-10 text-sm font-semibold"
         onClick={generatePDF}
         disabled={isGenerating || !model || !month || !year}
       >
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center space-x-2">
           {isGenerating ? (
-            <Download className="h-5 w-5 animate-bounce" />
+            <Download className="h-4 w-4 animate-bounce" />
           ) : (
-            <Download className="h-5 w-5" />
+            <Download className="h-4 w-4" />
           )}
           <span>
             {isGenerating

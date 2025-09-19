@@ -3,9 +3,13 @@ import { Card, CardContent } from './ui/card';
 import { Button } from './ui/button';
 import { Github, User, Heart } from 'lucide-react';
 
-const Footer: React.FC = () => {
+interface FooterProps {
+  className?: string;
+}
+
+const Footer: React.FC<FooterProps> = ({ className }) => {
   return (
-    <footer className="mt-auto py-4 sm:py-6">
+    <footer className={`mt-auto py-4 sm:py-6 ${className || ''}`}>
       <Card className="border-t border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <CardContent className="p-4 sm:p-6">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-6 text-sm text-muted-foreground">

@@ -129,14 +129,14 @@ const ModelManagement: React.FC<ModelManagementProps> = ({ onClose }) => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold">Gestión de Modelos</h2>
-          <p className="text-muted-foreground">Administra tus modelos de factura</p>
+          <h2 className="text-xl font-bold">Gestión de Modelos</h2>
+          <p className="text-sm text-muted-foreground">Administra tus modelos de factura</p>
         </div>
         {onClose && (
-          <Button variant="outline" onClick={onClose}>
+          <Button variant="outline" onClick={onClose} className="h-9">
             Volver
           </Button>
         )}
@@ -144,30 +144,30 @@ const ModelManagement: React.FC<ModelManagementProps> = ({ onClose }) => {
 
       {/* Estadísticas */}
       <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <BarChart3 className="h-5 w-5" />
+        <CardHeader className="pb-3">
+          <CardTitle className="flex items-center gap-2 text-sm">
+            <BarChart3 className="h-4 w-4" />
             Estadísticas
           </CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-2 gap-4">
+        <CardContent className="pt-0">
+          <div className="grid grid-cols-2 gap-3">
             <div className="text-center">
-              <div className="text-2xl font-bold text-primary">{stats.total}</div>
-              <div className="text-sm text-muted-foreground">Total Modelos</div>
+              <div className="text-xl font-bold text-primary">{stats.total}</div>
+              <div className="text-xs text-muted-foreground">Total Modelos</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-primary">
+              <div className="text-xl font-bold text-primary">
                 {Object.keys(stats.byType).length}
               </div>
-              <div className="text-sm text-muted-foreground">Tipos</div>
+              <div className="text-xs text-muted-foreground">Tipos</div>
             </div>
           </div>
-          <div className="mt-4">
-            <div className="text-sm font-medium mb-2">Por tipo:</div>
+          <div className="mt-3">
+            <div className="text-xs font-medium mb-1">Por tipo:</div>
             <div className="space-y-1">
               {Object.entries(stats.byType).map(([type, count]) => (
-                <div key={type} className="flex justify-between text-sm">
+                <div key={type} className="flex justify-between text-xs">
                   <span className="capitalize">{type}</span>
                   <span>{count}</span>
                 </div>
@@ -179,12 +179,12 @@ const ModelManagement: React.FC<ModelManagementProps> = ({ onClose }) => {
 
       {/* Acciones */}
       <div className="flex gap-2 flex-wrap">
-        <Button onClick={handleCreate} className="flex-1">
-          <Plus className="h-4 w-4 mr-2" />
+        <Button onClick={handleCreate} className="flex-1 h-9 text-sm">
+          <Plus className="h-3 w-3 mr-1" />
           Nuevo Modelo
         </Button>
-        <Button variant="outline" onClick={handleExport}>
-          <Download className="h-4 w-4 mr-2" />
+        <Button variant="outline" onClick={handleExport} className="h-9 text-sm">
+          <Download className="h-3 w-3 mr-1" />
           Exportar
         </Button>
         <div className="relative">
@@ -194,8 +194,8 @@ const ModelManagement: React.FC<ModelManagementProps> = ({ onClose }) => {
             onChange={handleImport}
             className="absolute inset-0 opacity-0 cursor-pointer"
           />
-          <Button variant="outline">
-            <Upload className="h-4 w-4 mr-2" />
+          <Button variant="outline" className="h-9 text-sm">
+            <Upload className="h-3 w-3 mr-1" />
             Importar
           </Button>
         </div>
@@ -207,10 +207,10 @@ const ModelManagement: React.FC<ModelManagementProps> = ({ onClose }) => {
           placeholder="Buscar modelos..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="pl-10"
+          className="pl-9 h-9 text-sm"
         />
         <svg
-          className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground"
+          className="absolute left-3 top-1/2 transform -translate-y-1/2 h-3 w-3 text-muted-foreground"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -225,15 +225,15 @@ const ModelManagement: React.FC<ModelManagementProps> = ({ onClose }) => {
       </div>
 
       {/* Lista de modelos */}
-      <div className="space-y-3">
+      <div className="space-y-2 max-h-[45vh] overflow-y-auto">
         {filteredModels.length === 0 ? (
           <Card>
-            <CardContent className="p-6 text-center">
-              <p className="text-muted-foreground">
+            <CardContent className="p-4 text-center">
+              <p className="text-sm text-muted-foreground">
                 {searchTerm ? 'No se encontraron modelos' : 'No hay modelos disponibles'}
               </p>
-              <Button onClick={handleCreate} className="mt-4">
-                <Plus className="h-4 w-4 mr-2" />
+              <Button onClick={handleCreate} className="mt-3 h-9 text-sm">
+                <Plus className="h-3 w-3 mr-1" />
                 Crear primer modelo
               </Button>
             </CardContent>
@@ -241,19 +241,19 @@ const ModelManagement: React.FC<ModelManagementProps> = ({ onClose }) => {
         ) : (
           filteredModels.map((model) => (
             <Card key={model.id} className="hover:shadow-md transition-shadow">
-              <CardContent className="p-4">
+              <CardContent className="p-3">
                 <div className="flex justify-between items-start">
                   <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-2">
-                      <h3 className="font-medium">{model.name}</h3>
-                      <span className="text-xs px-2 py-1 rounded-full bg-primary/10 text-primary">
+                    <div className="flex items-center gap-1 mb-1">
+                      <h3 className="font-medium text-sm">{model.name}</h3>
+                      <span className="text-xs px-1.5 py-0.5 rounded-full bg-primary/10 text-primary">
                         {model.type}
                       </span>
                     </div>
-                    <p className="text-sm text-muted-foreground mb-2">
+                    <p className="text-xs text-muted-foreground mb-1">
                       {model.description}
                     </p>
-                    <div className="text-sm font-medium text-primary">
+                    <div className="text-xs font-medium text-primary">
                       {model.baseAmount.toLocaleString('es-ES', {
                         style: 'currency',
                         currency: 'EUR',
@@ -264,21 +264,22 @@ const ModelManagement: React.FC<ModelManagementProps> = ({ onClose }) => {
                       IVA: {model.ivaPercentage}% | IRPF: {model.irpfPercentage}%
                     </div>
                   </div>
-                  <div className="flex gap-1 ml-4">
+                  <div className="flex gap-1 ml-3">
                     <Button
                       size="icon"
                       variant="outline"
                       onClick={() => handleEdit(model)}
+                      className="h-7 w-7"
                     >
-                      <Edit className="h-4 w-4" />
+                      <Edit className="h-3 w-3" />
                     </Button>
                     <Button
                       size="icon"
                       variant="outline"
                       onClick={() => handleDelete(model.id)}
-                      className="text-destructive hover:text-destructive"
+                      className="text-destructive hover:text-destructive h-7 w-7"
                     >
-                      <Trash2 className="h-4 w-4" />
+                      <Trash2 className="h-3 w-3" />
                     </Button>
                   </div>
                 </div>
